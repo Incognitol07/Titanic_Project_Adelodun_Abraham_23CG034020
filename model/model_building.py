@@ -25,11 +25,15 @@ def preprocess_and_train(data):
     selected_features = ["Pclass", "Sex", "Age", "SibSp", "Fare"]
     target = "Survived"
 
-    X = data[selected_features]
-    y = data[target]
+    X = data[selected_features].values
+    y = data[target].values
 
     # Preprocessing
-    numeric_features = ["Age", "Fare", "SibSp", "Pclass"]
+    # Features: ["Pclass", "Sex", "Age", "SibSp", "Fare"]
+    # Indices:    0        1      2      3        4
+
+    # Numeric: Age(2), Fare(4), SibSp(3), Pclass(0)
+    numeric_features_indices = [2, 4, 3, 0]
     numeric_transformer = Pipeline(
         steps=[
             ("imputer", SimpleImputer(strategy="median")),
@@ -37,13 +41,14 @@ def preprocess_and_train(data):
         ]
     )
 
-    categorical_features = ["Sex"]
+    # Categorical: Sex(1)
+    categorical_features_indices = [1]
     categorical_transformer = OneHotEncoder(handle_unknown="ignore")
 
     preprocessor = ColumnTransformer(
         transformers=[
-            ("num", numeric_transformer, numeric_features),
-            ("cat", categorical_transformer, categorical_features),
+            ("num", numeric_transformer, numeric_features_indices),
+            ("cat", categorical_transformer, categorical_features_indices),
         ]
     )
 
