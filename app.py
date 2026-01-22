@@ -1,6 +1,4 @@
-import os
 import joblib
-import pandas as pd
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -38,20 +36,15 @@ def index():
                 fare = float(request.form["fare"])
 
                 # Create DataFrame
-                input_df = pd.DataFrame(
-                    [
-                        {
-                            "Pclass": pclass,
-                            "Sex": sex,
-                            "Age": age,
-                            "SibSp": sibsp,
-                            "Fare": fare,
-                        }
-                    ]
-                )
+                # Create Input Array (Features: Pclass, Sex, Age, SibSp, Fare)
+                # Ensure the order matches what the model expects:
+                # ["Pclass", "Sex", "Age", "SibSp", "Fare"]
+
+                # Note: Our updated pipeline handles this list format
+                input_data = [[pclass, sex, age, sibsp, fare]]
 
                 # Predict (0 = Died, 1 = Survived)
-                pred = model.predict(input_df)[0]
+                pred = model.predict(input_data)[0]
 
                 if pred == 1:
                     prediction_text = "Survived"
