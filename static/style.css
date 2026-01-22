@@ -158,7 +158,13 @@ body {
 .input-group input:focus, .input-group select:focus {
     outline: none;
     border-color: var(--primary);
-    background: rgba(138, 43, 226, 0.15);
+    background: rgba(255, 255, 255, 0.05); /* Neutral glass focus */
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+}
+
+select option {
+    background-color: #1a1a1a;
+    color: white;
 }
 
 .predict-btn {
