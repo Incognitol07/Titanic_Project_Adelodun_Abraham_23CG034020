@@ -4,8 +4,9 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# Load Model
-MODEL_PATH = "model/titanic_survival_model.pkl"
+# Load Model - use absolute path for Vercel
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model", "titanic_survival_model.pkl")
 model = None
 
 
@@ -13,8 +14,9 @@ def load_titanic_model():
     global model
     if os.path.exists(MODEL_PATH):
         model = joblib.load(MODEL_PATH)
+        print(f"Model loaded successfully from {MODEL_PATH}")
     else:
-        print("Model file not found. Ensure model is trained.")
+        print(f"Model file not found at {MODEL_PATH}. Ensure model is trained.")
 
 
 load_titanic_model()
